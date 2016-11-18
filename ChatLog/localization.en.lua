@@ -11,10 +11,12 @@ BINDING_NAME_CHAT_LOG_TOGGLE = "Toggle ChatLog";
 --LOG NAMES
 --Game
 CHAT_LOG_WHISPER_NAME = "Whispers";
+CHAT_LOG_EMOTE_NAME = "Emote";
 CHAT_LOG_RAID_NAME = "Raid";
 CHAT_LOG_PARTY_NAME = "Party";
 CHAT_LOG_SAY_NAME = "Say";
 CHAT_LOG_YELL_NAME = "Yell";
+CHAT_LOG_BATTLEGROUND_NAME = "Battleground";
 CHAT_LOG_OFFICER_NAME = "Officer";
 CHAT_LOG_GUILD_NAME = "Guild";
 --General: Names to display
@@ -86,10 +88,12 @@ CHAT_LOG_PCLEAR = "clear";
 CHAT_LOG_PALLCLEAR = "clearall";
 --Second parameters
 CHAT_LOG_PCLEAR_WHISPER = "whispers";
+CHAT_LOG_PCLEAR_EMOTE = "emote";
 CHAT_LOG_PCLEAR_RAID = "raid";
 CHAT_LOG_PCLEAR_PARTY = "party";
 CHAT_LOG_PCLEAR_SAY = "say";
 CHAT_LOG_PCLEAR_YELL = "yell";
+CHAT_LOG_PCLEAR_BATTLEGROUND = "battleground";
 CHAT_LOG_PCLEAR_OFFICER = "officer";
 CHAT_LOG_PCLEAR_GUILD = "guild";
 

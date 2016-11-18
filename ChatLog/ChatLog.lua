@@ -28,12 +28,16 @@ function ChatLog_OnLoad()
 	ChatLog:RegisterEvent("CHAT_MSG_CHANNEL_NOTICE");
 	ChatLog:RegisterEvent("CHAT_MSG_WHISPER");
 	ChatLog:RegisterEvent("CHAT_MSG_WHISPER_INFORM");
+	ChatLog:RegisterEvent("CHAT_MSG_EMOTE");
+	ChatLog:RegisterEvent("CHAT_MSG_TEXT_EMOTE");
 	ChatLog:RegisterEvent("CHAT_MSG_RAID");
 	ChatLog:RegisterEvent("CHAT_MSG_RAID_LEADER");
 	ChatLog:RegisterEvent("CHAT_MSG_RAID_WARNING");
 	ChatLog:RegisterEvent("CHAT_MSG_PARTY");
 	ChatLog:RegisterEvent("CHAT_MSG_SAY");
 	ChatLog:RegisterEvent("CHAT_MSG_YELL");
+	ChatLog:RegisterEvent("CHAT_MSG_BATTLEGROUND");
+	ChatLog:RegisterEvent("CHAT_MSG_BATTLEGROUND_LEADER");
 	ChatLog:RegisterEvent("CHAT_MSG_OFFICER");
 	ChatLog:RegisterEvent("CHAT_MSG_GUILD");
 	ChatLog:RegisterEvent("CHAT_MSG_CHANNEL");
@@ -160,6 +164,24 @@ function ChatLog_OnEvent(event)
 			ChatLog_CurrentChatUpdateWithMessage(ChatLog_Logs[CHAT_LOG_WHISPER_INDEX]["logs"], msg);
 		end
 	end
+	if ( event == "CHAT_MSG_EMOTE" and ChatLog_Logs[CHAT_LOG_EMOTE_INDEX]["enabled"] == 1) then
+		msg = "[" .. date("%H:%M:%S") .. "] |Hplayer:" .. arg2 .. "|h[" .. arg2 .. "]|h: " .. arg1;
+
+		ChatLog_LogInsert (ChatLog_Logs[CHAT_LOG_EMOTE_INDEX]["logs"], msg);
+		ChatLog_CheckTableSize(ChatLog_Logs[CHAT_LOG_EMOTE_INDEX]["logs"]);
+		if (CHAT_LOG_CURRENT_INDEX == CHAT_LOG_EMOTE_INDEX) then
+			ChatLog_CurrentChatUpdateWithMessage(ChatLog_Logs[CHAT_LOG_WHISPER_INDEX]["logs"], msg);
+		end
+	end
+	if ( event == "CHAT_MSG_TEXT_EMOTE" and ChatLog_Logs[CHAT_LOG_EMOTE_INDEX]["enabled"] == 1) then
+		msg = "[" .. date("%H:%M:%S") .. "] |Hplayer:" .. arg2 .. "|h[" .. arg2 .. "]|h: " .. arg1;
+			
+		ChatLog_LogInsert (ChatLog_Logs[CHAT_LOG_EMOTE_INDEX]["logs"], msg);		
+		ChatLog_CheckTableSize(ChatLog_Logs[CHAT_LOG_EMOTE_INDEX]["logs"]);
+		if ( CHAT_LOG_CURRENT_INDEX == CHAT_LOG_EMOTE_INDEX) then
+			ChatLog_CurrentChatUpdateWithMessage(ChatLog_Logs[CHAT_LOG_EMOTE_INDEX]["logs"], msg);
+		end
+	end
 	if ( ((event == "CHAT_MSG_RAID") or (event == "CHAT_MSG_RAID_LEADER") or (event == "CHAT_MSG_RAID_WARNING")) and ChatLog_Logs[CHAT_LOG_RAID_INDEX]["enabled"] == 1) then
 		if ( event == "CHAT_MSG_RAID_LEADER" ) then
 			msg = "|c" .. ChatLog_MakeHex(ChatTypeInfo["RAID_LEADER"]["r"], ChatTypeInfo["RAID_LEADER"]["g"], ChatTypeInfo["RAID_LEADER"]["b"]) .. "[" .. date("%H:%M:%S") .. "] |Hplayer:" .. arg2 .. "|h[|c" .. ChatLog_MakeHex(CHAT_LOG_COLORS["RAID_LEADER"]["r"], CHAT_LOG_COLORS["RAID_LEADER"]["g"], CHAT_LOG_COLORS["RAID_LEADER"]["b"]) .. arg2 .. "|r]|h: " .. arg1 .. "|r";
@@ -212,6 +234,24 @@ function ChatLog_OnEvent(event)
 		ChatLog_CheckTableSize(ChatLog_Logs[CHAT_LOG_YELL_INDEX]["logs"]);
 		if ( CHAT_LOG_CURRENT_INDEX == CHAT_LOG_YELL_INDEX) then
 			ChatLog_CurrentChatUpdateWithMessage(ChatLog_Logs[CHAT_LOG_YELL_INDEX]["logs"], msg);
+		end
+	end
+	if ( event == "CHAT_MSG_BATTLEGROUND" and ChatLog_Logs[CHAT_LOG_BATTLEGROUND_INDEX]["enabled"] == 1) then
+		msg = "[" .. date("%H:%M:%S") .. "] |Hplayer:" .. arg2 .. "|h[" .. arg2 .. "]|h: " .. arg1;
+		
+		ChatLog_LogInsert (ChatLog_Logs[CHAT_LOG_BATTLEGROUND_INDEX]["logs"], msg);
+		ChatLog_CheckTableSize(ChatLog_Logs[CHAT_LOG_BATTLEGROUND_INDEX]["logs"]);
+		if ( CHAT_LOG_CURRENT_INDEX == CHAT_LOG_BATTLEGROUND_INDEX) then
+			ChatLog_CurrentChatUpdateWithMessage(ChatLog_Logs[CHAT_LOG_BATTLEGROUND_INDEX]["logs"], msg);
+		end
+	end
+	if ( event == "CHAT_MSG_BATTLEGROUND_LEADER" and ChatLog_Logs[CHAT_LOG_BATTLEGROUND_INDEX]["enabled"] == 1) then
+		msg = "[" .. date("%H:%M:%S") .. "] |Hplayer:" .. arg2 .. "|h[" .. arg2 .. "]|h: " .. arg1;
+		
+		ChatLog_LogInsert (ChatLog_Logs[CHAT_LOG_BATTLEGROUND_INDEX]["logs"], msg);
+		ChatLog_CheckTableSize(ChatLog_Logs[CHAT_LOG_BATTLEGROUND_INDEX]["logs"]);
+		if ( CHAT_LOG_CURRENT_INDEX == CHAT_LOG_BATTLEGROUND_INDEX) then
+			ChatLog_CurrentChatUpdateWithMessage(ChatLog_Logs[CHAT_LOG_BATTLEGROUND_INDEX]["logs"], msg);
 		end
 	end
 	if ( event == "CHAT_MSG_OFFICER" and ChatLog_Logs[CHAT_LOG_OFFICER_INDEX]["enabled"] == 1) then
@@ -372,10 +412,12 @@ function ChatLog_InitStructure()
 	
 	--Inits the name of logs in current locale
 	ChatLog_Logs[CHAT_LOG_WHISPER_INDEX]["name"] = CHAT_LOG_WHISPER_NAME;
+	ChatLog_Logs[CHAT_LOG_EMOTE_INDEX]["name"] = CHAT_LOG_EMOTE_NAME;
 	ChatLog_Logs[CHAT_LOG_RAID_INDEX]["name"] = CHAT_LOG_RAID_NAME;
 	ChatLog_Logs[CHAT_LOG_PARTY_INDEX]["name"] = CHAT_LOG_PARTY_NAME;
 	ChatLog_Logs[CHAT_LOG_SAY_INDEX]["name"] = CHAT_LOG_SAY_NAME;
 	ChatLog_Logs[CHAT_LOG_YELL_INDEX]["name"] = CHAT_LOG_YELL_NAME;
+	ChatLog_Logs[CHAT_LOG_BATTLEGROUND_INDEX]["name"] = CHAT_LOG_BATTLEGROUND_NAME;
 	ChatLog_Logs[CHAT_LOG_OFFICER_INDEX]["name"] = CHAT_LOG_OFFICER_NAME;
 	ChatLog_Logs[CHAT_LOG_GUILD_INDEX]["name"] = CHAT_LOG_GUILD_NAME;
 	
@@ -590,7 +632,7 @@ function ChatLogFrameDropDown_Initialize()
 	end
 	
 	ChatLogFrameDropDown_AddButton("Game chats", 1, nil, nil, nil, 0, ChatLogFrameDropDownOnClick);
-	for index=1, 7 do
+	for index=1, 9 do
 		ChatLogFrameDropDown_AddButton(ChatLog_Logs[index]["name"], nil, ChatLog_Logs[index]["enabled"], true, nil, ChatLog_Logs[index]["id"], ChatLogFrameDropDownOnClick);
 	end
 	
@@ -603,7 +645,7 @@ function ChatLogFrameDropDown_Initialize()
 	ChatLogFrameDropDown_AddButton(CHAT_LOG_GUILDRECRUITMENT_NAME, nil, nil, true, 1, "guildrecruitment", ChatLogFrameDropDownOnClick);
 	
 	ChatLogFrameDropDown_AddButton("Other chats", 1, nil, nil, nil, 0, ChatLogFrameDropDownOnClick);
-	for index=8, getn(ChatLog_Logs)  do
+	for index=10, getn(ChatLog_Logs)  do
 		local chname = string.lower(string.gsub(ChatLog_Logs[index]["name"], "(%w+) - (.+)", "%1"));
 		if (
 				not (chname == CHAT_LOG_GENERAL_STR)
@@ -693,6 +735,8 @@ end
 function ChatLog_SetColor(obj)
 	if (ChatLog_Logs[CHAT_LOG_CURRENT_INDEX]["id"] == CHAT_LOG_WHISPER_ID) then
 		obj:SetTextColor(ChatTypeInfo["WHISPER"]["r"], ChatTypeInfo["WHISPER"]["g"], ChatTypeInfo["WHISPER"]["b"]);
+	elseif (ChatLog_Logs[CHAT_LOG_CURRENT_INDEX]["id"] == CHAT_LOG_EMOTE_ID) then
+		obj:SetTextColor(ChatTypeInfo["EMOTE"]["r"], ChatTypeInfo["EMOTE"]["g"], ChatTypeInfo["EMOTE"]["b"]);
 	elseif (ChatLog_Logs[CHAT_LOG_CURRENT_INDEX]["id"] == CHAT_LOG_RAID_ID) then
 		obj:SetTextColor(ChatTypeInfo["RAID"]["r"], ChatTypeInfo["RAID"]["g"], ChatTypeInfo["RAID"]["b"]);
 	elseif (ChatLog_Logs[CHAT_LOG_CURRENT_INDEX]["id"] == CHAT_LOG_PARTY_ID) then
@@ -701,6 +745,8 @@ function ChatLog_SetColor(obj)
 		obj:SetTextColor(ChatTypeInfo["SAY"]["r"], ChatTypeInfo["SAY"]["g"], ChatTypeInfo["SAY"]["b"]);
 	elseif (ChatLog_Logs[CHAT_LOG_CURRENT_INDEX]["id"] == CHAT_LOG_YELL_ID) then
 		obj:SetTextColor(ChatTypeInfo["YELL"]["r"], ChatTypeInfo["YELL"]["g"], ChatTypeInfo["YELL"]["b"]);
+	elseif (ChatLog_Logs[CHAT_LOG_CURRENT_INDEX]["id"] == CHAT_LOG_BATTLEGROUND_ID) then
+		obj:SetTextColor(ChatTypeInfo["BATTLEGROUND"]["r"], ChatTypeInfo["BATTLEGROUND"]["g"], ChatTypeInfo["BATTLEGROUND"]["b"]);
 	elseif (ChatLog_Logs[CHAT_LOG_CURRENT_INDEX]["id"] == CHAT_LOG_OFFICER_ID) then
 		obj:SetTextColor(ChatTypeInfo["OFFICER"]["r"], ChatTypeInfo["OFFICER"]["g"], ChatTypeInfo["OFFICER"]["b"]);
 	elseif (ChatLog_Logs[CHAT_LOG_CURRENT_INDEX]["id"] == CHAT_LOG_GUILD_ID) then
@@ -739,10 +785,12 @@ function ChatLog_UpdateLogButtons()
 	
 	if (
 			ChatLog_Logs[CHAT_LOG_CURRENT_INDEX]["id"] == CHAT_LOG_WHISPER_ID
+		or	ChatLog_Logs[CHAT_LOG_CURRENT_INDEX]["id"] == CHAT_LOG_EMOTE_ID
 		or	ChatLog_Logs[CHAT_LOG_CURRENT_INDEX]["id"] == CHAT_LOG_RAID_ID
 		or	ChatLog_Logs[CHAT_LOG_CURRENT_INDEX]["id"] == CHAT_LOG_PARTY_ID
 		or	ChatLog_Logs[CHAT_LOG_CURRENT_INDEX]["id"] == CHAT_LOG_SAY_ID
 		or	ChatLog_Logs[CHAT_LOG_CURRENT_INDEX]["id"] == CHAT_LOG_YELL_ID
+		or	ChatLog_Logs[CHAT_LOG_CURRENT_INDEX]["id"] == CHAT_LOG_BATTLEGROUND_ID
 		or	ChatLog_Logs[CHAT_LOG_CURRENT_INDEX]["id"] == CHAT_LOG_OFFICER_ID
 		or	ChatLog_Logs[CHAT_LOG_CURRENT_INDEX]["id"] == CHAT_LOG_GUILD_ID
 		or	ChatLog_IsPlayerOnChannel(ChatLog_Logs[CHAT_LOG_CURRENT_INDEX]["id"]) == true
@@ -905,6 +953,11 @@ function ChatLog_SlashCommand(args)
 			if (CHAT_LOG_CURRENT_INDEX == CHAT_LOG_WHISPER_INDEX) then
 				ChatLog_ShowLog(CHAT_LOG_CURRENT_INDEX);
 			end
+		elseif (arg2 == CHAT_LOG_PCLEAR_EMOTE) then
+			ChatLog_Clear(CHAT_LOG_EMOTE_INDEX);
+			if (CHAT_LOG_CURRENT_INDEX == CHAT_LOG_EMOTE_INDEX) then
+				ChatLog_ShowLog(CHAT_LOG_CURRENT_INDEX);
+			end
 		elseif (arg2 == CHAT_LOG_PCLEAR_RAID) then
 			ChatLog_Clear(CHAT_LOG_RAID_INDEX);
 			if (CHAT_LOG_CURRENT_INDEX == CHAT_LOG_RAID_INDEX) then
@@ -923,6 +976,11 @@ function ChatLog_SlashCommand(args)
 		elseif (arg2 == CHAT_LOG_PCLEAR_YELL) then
 			ChatLog_Clear(CHAT_LOG_YELL_INDEX);
 			if (CHAT_LOG_CURRENT_INDEX == CHAT_LOG_YELL_INDEX) then
+				ChatLog_ShowLog(CHAT_LOG_CURRENT_INDEX);
+			end
+		elseif (arg2 == CHAT_LOG_PCLEAR_BATTLEGROUND) then
+			ChatLog_Clear(CHAT_LOG_BATTLEGROUND_INDEX);
+			if (CHAT_LOG_CURRENT_INDEX == CHAT_LOG_BATTLEGROUND_INDEX) then
 				ChatLog_ShowLog(CHAT_LOG_CURRENT_INDEX);
 			end
 		elseif (arg2 == CHAT_LOG_PCLEAR_OFFICER) then
